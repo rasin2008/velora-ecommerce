@@ -1,0 +1,13 @@
+.sort-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.sort-container select {
+  padding: 10px 15px;
+  width: 240px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}

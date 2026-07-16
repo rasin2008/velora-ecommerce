@@ -1,0 +1,103 @@
+.details-container {
+  width: 90%;
+  margin: 40px auto;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+}
+
+.details-image {
+  flex: 1;
+}
+
+.details-image img {
+  width: 100%;
+  max-width: 450px;
+  object-fit: contain;
+}
+
+.details-info {
+  flex: 1;
+}
+
+.details-info h1 {
+  margin-bottom: 15px;
+}
+
+.brand,
+.category {
+  color: gray;
+  margin: 8px 0;
+}
+
+.price {
+  color: #2563eb;
+  margin: 15px 0;
+}
+
+.rating {
+  color: orange;
+  font-weight: bold;
+}
+
+.discount {
+  color: red;
+  font-weight: bold;
+}
+
+.stock {
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.in-stock {
+  color: green;
+}
+
+.out-stock {
+  color: red;
+}
+
+.description {
+  margin: 20px 0;
+  line-height: 1.7;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.cart-btn,
+.wish-btn,
+.back-btn {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.cart-btn {
+  background: #2563eb;
+}
+
+.wish-btn {
+  background: #ec4899;
+}
+
+.back-btn {
+  background: #111827;
+}
+
+@media (max-width: 768px) {
+  .details-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+}

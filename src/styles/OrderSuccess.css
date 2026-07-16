@@ -1,0 +1,42 @@
+.success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.success-card {
+  width: 500px;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,.15);
+}
+
+.success-card h1 {
+  color: green;
+}
+
+.success-card p {
+  margin: 15px 0;
+  font-size: 18px;
+}
+
+.shop-btn,
+.home-btn {
+  margin: 10px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+}
+
+.shop-btn {
+  background: #2563eb;
+}
+
+.home-btn {
+  background: green;
+}

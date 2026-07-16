@@ -1,0 +1,49 @@
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 70px;
+  min-height: 90vh;
+  background: #f8fafc;
+}
+
+.hero-content {
+  width: 50%;
+}
+
+
+.hero-content h1 {
+  font-size: 55px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  color: #111827;
+}
+
+.hero-content p {
+  font-size: 20px;
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+.shop-btn {
+  padding: 15px 35px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+.shop-btn:hover {
+  background: #1d4ed8;
+}
+
+.hero-image {
+  width: 45%;
+}
+
+.hero-image img {
+  width: 100%;
+  border-radius: 15px;
+}
