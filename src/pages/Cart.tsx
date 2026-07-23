@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+
 import { useCart } from "../context/CartContext";
+
 import "../styles/Cart.css";
 
 function Cart() {
@@ -11,16 +14,20 @@ function Cart() {
   } = useCart();
 
   const total = cart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) =>
+      sum + item.price * item.quantity,
     0
   );
 
   if (cart.length === 0) {
     return (
       <div className="empty-cart">
-        <h2>🛒 Your Cart is Empty</h2>
+        <h1>Your Cart is Empty 🛒</h1>
+
         <Link to="/products">
-          <button>Continue Shopping</button>
+          <button>
+            Continue Shopping
+          </button>
         </Link>
       </div>
     );
@@ -31,7 +38,10 @@ function Cart() {
       <h1>Shopping Cart</h1>
 
       {cart.map((item) => (
-        <div className="cart-item" key={item.id}>
+        <div
+          className="cart-item"
+          key={item.id}
+        >
           <img
             src={item.thumbnail}
             alt={item.title}
@@ -51,7 +61,9 @@ function Cart() {
                 -
               </button>
 
-              <span>{item.quantity}</span>
+              <span>
+                {item.quantity}
+              </span>
 
               <button
                 onClick={() =>
@@ -65,9 +77,13 @@ function Cart() {
 
           <button
             className="remove-btn"
-            onClick={() =>
-              removeFromCart(item.id)
-            }
+            onClick={() => {
+              removeFromCart(item.id);
+
+              toast.success(
+                "Removed from cart"
+              );
+            }}
           >
             Remove
           </button>
@@ -75,11 +91,13 @@ function Cart() {
       ))}
 
       <div className="cart-footer">
-        <h2>Total : ₹ {total}</h2>
+        <h2>
+          Total : ₹ {total.toFixed(2)}
+        </h2>
 
         <Link to="/checkout">
           <button className="checkout-btn">
-            Proceed to Checkout
+            Checkout
           </button>
         </Link>
       </div>

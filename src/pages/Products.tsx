@@ -1,50 +1,65 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ProductCard from "../components/ProductCard";
+import { supabase } from "../lib/supabase";
 import "../styles/Products.css";
 
 type Product = {
   id: number;
   title: string;
+  description: string;
   price: number;
-  thumbnail: string;
   category: string;
-};
-
-type Category = {
-  slug: string;
-  name: string;
-  url: string;
+  image: string;
+  stock: number;
 };
 
 function Products() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const [search, setSearch] = useState("");
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [sortOrder, setSortOrder] = useState("default");
+  const [selectedCategory, setSelectedCategory] =
+    useState("all");
 
-  // Load Products
+  const [sortOrder, setSortOrder] =
+    useState("default");
+
   useEffect(() => {
-    fetch("https://dummyjson.com/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data.products);
-      });
+    loadProducts();
   }, []);
 
-  // Load Categories
-  useEffect(() => {
-    fetch("https://dummyjson.com/products/categories")
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data);
-      });
-  }, []);
+  async function loadProducts() {
+    console.log("Loading Products...");
 
-  // Search + Category Filter + Sorting
-  const filteredProducts = products
-    .filter((product) => {
-      const matchesSearch = product.title
+    const { data, error } = await supabase
+      .from("products")
+      .select("*");
+
+    console.log("SUPABASE DATA:", data);
+    console.log("SUPABASE ERROR:", error);
+
+    if (error) {
+      console.log(error);
+    } else {
+      setProducts(data || []);
+    }
+
+    setLoading(false);
+  }
+
+  const categories = [
+    ...new Set(
+      products
+        .map((p) => p.category)
+        .filter(Boolean)
+    ),
+  ];
+
+  const filteredProducts = useMemo(() => {
+    let filtered = products.filter((product) => {
+      const title = product.title || "";
+
+      const matchesSearch = title
         .toLowerCase()
         .includes(search.toLowerCase());
 
@@ -53,52 +68,81 @@ function Products() {
         product.category === selectedCategory;
 
       return matchesSearch && matchesCategory;
-    })
-    .sort((a, b) => {
-      if (sortOrder === "lowToHigh") {
-        return a.price - b.price;
-      }
-
-      if (sortOrder === "highToLow") {
-        return b.price - a.price;
-      }
-
-      if (sortOrder === "name") {
-        return a.title.localeCompare(b.title);
-      }
-
-      return 0;
     });
+
+    switch (sortOrder) {
+      case "lowToHigh":
+        filtered.sort(
+          (a, b) => a.price - b.price
+        );
+        break;
+
+      case "highToLow":
+        filtered.sort(
+          (a, b) => b.price - a.price
+        );
+        break;
+
+      case "name":
+        filtered.sort((a, b) =>
+          a.title.localeCompare(b.title)
+        );
+        break;
+    }
+
+    return filtered;
+  }, [
+    products,
+    search,
+    selectedCategory,
+    sortOrder,
+  ]);
+
+  if (loading) {
+    return (
+      <div className="products-container">
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="products-container">
-      <h1 className="products-title">Our Products</h1>
+      <h1 className="products-title">
+        Our Products
+      </h1>
 
       <input
-        type="text"
-        placeholder="Search Products..."
         className="search-input"
+        placeholder="Search..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) =>
+          setSearch(e.target.value)
+        }
       />
 
-      <div className="sort-container">
-        <select
-          value={sortOrder}
-          onChange={(e) => setSortOrder(e.target.value)}
-        >
-          <option value="default">Sort By</option>
-          <option value="lowToHigh">
-            Price: Low to High
-          </option>
-          <option value="highToLow">
-            Price: High to Low
-          </option>
-          <option value="name">
-            Name (A - Z)
-          </option>
-        </select>
-      </div>
+      <select
+        value={sortOrder}
+        onChange={(e) =>
+          setSortOrder(e.target.value)
+        }
+      >
+        <option value="default">
+          Sort By
+        </option>
+
+        <option value="lowToHigh">
+          Price Low → High
+        </option>
+
+        <option value="highToLow">
+          Price High → Low
+        </option>
+
+        <option value="name">
+          Name A-Z
+        </option>
+      </select>
 
       <div className="category-buttons">
         <button
@@ -109,27 +153,39 @@ function Products() {
           All
         </button>
 
-        {categories.map((category) => (
+        {categories.map((category, index) => (
           <button
-            key={category.slug}
+            key={`${category}-${index}`}
             onClick={() =>
-              setSelectedCategory(
-                category.slug
-              )
+              setSelectedCategory(category)
             }
           >
-            {category.name}
+            {category}
           </button>
         ))}
       </div>
 
+      <p>
+        {filteredProducts.length} Products
+      </p>
+
       <div className="products-grid">
-        {filteredProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-          />
-        ))}
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={{
+                id: product.id,
+                title: product.title,
+                price: product.price,
+                thumbnail: product.image,
+                category: product.category,
+              }}
+            />
+          ))
+        ) : (
+          <h2>No Products Found</h2>
+        )}
       </div>
     </div>
   );

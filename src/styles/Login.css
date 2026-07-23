@@ -1,0 +1,160 @@
+/* ===========================
+   Login Page
+=========================== */
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+
+  background: linear-gradient(135deg,#eff6ff,#f8fafc);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+
+  background: #ffffff;
+
+  padding: 40px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 15px 35px rgba(0,0,0,.08);
+}
+
+.login-card h1 {
+  text-align: center;
+  color: #111827;
+  margin-bottom: 10px;
+}
+
+.login-card p {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+.login-card input {
+  width: 100%;
+
+  padding: 14px;
+
+  margin-bottom: 18px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  font-size: 15px;
+
+  transition: .3s;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.password-box {
+  position: relative;
+}
+
+.show-btn {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+
+  color: #2563eb;
+
+  font-weight: bold;
+}
+
+.login-btn {
+  width: 100%;
+
+  padding: 15px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #2563eb;
+
+  color: white;
+
+  font-size: 17px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: .3s;
+}
+
+.login-btn:hover {
+  background: #1d4ed8;
+}
+
+.login-footer {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.login-footer a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Dark Mode */
+
+body.dark .login-container {
+  background: #0f172a;
+}
+
+body.dark .login-card {
+  background: #1e293b;
+}
+
+body.dark .login-card h1 {
+  color: white;
+}
+
+body.dark .login-card p {
+  color: #cbd5e1;
+}
+
+body.dark .login-card input {
+  background: #111827;
+  color: white;
+  border: 1px solid #374151;
+}
+
+body.dark .show-btn {
+  color: #60a5fa;
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.login-card{
+
+padding:30px 20px;
+
+}
+
+}

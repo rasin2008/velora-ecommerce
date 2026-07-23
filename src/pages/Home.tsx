@@ -1,25 +1,27 @@
-import "../styles/Home.css";
+import { useEffect } from "react";
+import { supabase } from "../lib/supabase";
 
 function Home() {
+  useEffect(() => {
+    const testConnection = async () => {
+      console.log("Supabase Client:", supabase);
+
+      const { data, error } = await supabase
+        .from("products")
+        .select("*");
+
+      console.log("HOME DATA:", data);
+      console.log("HOME ERROR:", error);
+    };
+
+    testConnection();
+  }, []);
+
   return (
-    <section className="hero">
-      <div className="hero-content">
-        <h1>Discover Amazing Products</h1>
-
-        <p>Shop the latest collections at the best prices.</p>
-
-        <button className="shop-btn">
-          Shop Now
-        </button>
-      </div>
-
-      <div className="hero-image">
-        <img
-          src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700"
-          alt="Shopping"
-        />
-      </div>
-    </section>
+    <div>
+      <h1>Welcome to Velora</h1>
+      <p>Smart Shopping, Better Living</p>
+    </div>
   );
 }
 

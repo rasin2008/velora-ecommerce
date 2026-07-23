@@ -1,0 +1,35 @@
+.auth-container{
+display:flex;
+justify-content:center;
+align-items:center;
+height:80vh;
+}
+
+.auth-form{
+width:350px;
+padding:30px;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+border-radius:10px;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.auth-form input{
+padding:12px;
+font-size:16px;
+}
+
+.auth-form button{
+padding:12px;
+background:#ff6b00;
+color:white;
+border:none;
+cursor:pointer;
+font-size:16px;
+border-radius:6px;
+}
+
+.auth-form button:hover{
+background:#e55d00;
+}

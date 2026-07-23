@@ -2,48 +2,149 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 70px;
+  gap: 60px;
+
   min-height: 90vh;
-  background: #f8fafc;
+  padding: 60px 8%;
+
+  background: linear-gradient(135deg,#f8fbff,#eef4ff);
+
+  transition: .3s;
 }
 
-.hero-content {
-  width: 50%;
+.hero-content{
+    flex:1;
 }
 
+.hero-content h1{
 
-.hero-content h1 {
-  font-size: 55px;
-  line-height: 1.2;
-  margin-bottom: 20px;
-  color: #111827;
+    font-size:60px;
+    color:#111827;
+
+    margin-bottom:20px;
+    line-height:1.2;
+
 }
 
-.hero-content p {
-  font-size: 20px;
-  color: #6b7280;
-  margin-bottom: 30px;
+.hero-content p{
+
+    font-size:20px;
+    color:#6b7280;
+
+    margin-bottom:35px;
 }
 
-.shop-btn {
-  padding: 15px 35px;
-  font-size: 18px;
-  border: none;
-  border-radius: 8px;
-  background: #2563eb;
-  color: white;
-  cursor: pointer;
+.shop-btn{
+
+    background:#2563eb;
+    color:white;
+
+    border:none;
+
+    padding:16px 38px;
+
+    border-radius:10px;
+
+    font-size:18px;
+    font-weight:600;
+
+    transition:.3s;
 }
 
-.shop-btn:hover {
-  background: #1d4ed8;
+.shop-btn:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-4px);
+
+    box-shadow:0 12px 20px rgba(37,99,235,.3);
+
 }
 
-.hero-image {
-  width: 45%;
+.hero-image{
+
+    flex:1;
+
+    display:flex;
+    justify-content:center;
+
 }
 
-.hero-image img {
-  width: 100%;
-  border-radius: 15px;
+.hero-image img{
+
+    width:100%;
+    max-width:520px;
+
+    border-radius:20px;
+
+    box-shadow:0 15px 30px rgba(0,0,0,.15);
+
+    transition:.3s;
+
+}
+
+.hero-image img:hover{
+
+    transform:scale(1.04);
+
+}
+
+/* DARK */
+
+body.dark .hero{
+
+background:#0f172a;
+
+}
+
+body.dark .hero-content h1{
+
+color:white;
+
+}
+
+body.dark .hero-content p{
+
+color:#d1d5db;
+
+}
+
+body.dark .hero-image img{
+
+box-shadow:0 10px 30px rgba(255,255,255,.08);
+
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.hero{
+
+flex-direction:column-reverse;
+
+text-align:center;
+
+padding:40px 25px;
+
+}
+
+.hero-content h1{
+
+font-size:42px;
+
+}
+
+.hero-content p{
+
+font-size:18px;
+
+}
+
+.hero-image img{
+
+max-width:380px;
+
+}
+
 }

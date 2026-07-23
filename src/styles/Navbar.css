@@ -1,59 +1,258 @@
+/* Navbar */
+
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #2563eb;
-  padding: 15px 40px;
+
+  padding: 15px 7%;
+
+  background: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+  transition: 0.3s;
 }
 
-.logo {
-  color: white;
+/* Logo */
+
+.logo a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
   font-size: 28px;
-  font-weight: bold;
+  font-weight: 700;
+
+  text-decoration: none;
+  color: #2563eb;
 }
+
+.logo span {
+  color: #111827;
+}
+
+/* Nav Links */
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 28px;
 }
 
 .nav-links a {
-  color: white;
   text-decoration: none;
-  font-size: 17px;
-  font-weight: 500;
+  color: #374151;
+  font-weight: 600;
+  transition: 0.3s;
 }
 
-.nav-links a:hover {
-  color: #ffd700;
+.nav-links a:hover,
+.nav-links a.active {
+  color: #2563eb;
 }
+
+/* Right Section */
+
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Wishlist & Cart */
+
+.icon-link {
+  position: relative;
+  font-size: 22px;
+}
+
+.badge {
+  position: absolute;
+
+  top: -8px;
+  right: -10px;
+
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+
+  background: #ef4444;
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Theme */
 
 .theme-btn {
-  padding: 8px 15px;
+
+  width: 42px;
+  height: 42px;
+
   border: none;
-  border-radius: 8px;
+  border-radius: 50%;
+
+  background: #eef2ff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   cursor: pointer;
-  background: white;
-  color: #111;
-  font-weight: bold;
+
+  font-size: 20px;
+
   transition: 0.3s;
 }
 
 .theme-btn:hover {
-  background: #f3f4f6;
+  transform: rotate(180deg);
 }
 
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    gap: 15px;
-    padding: 20px;
-  }
+/* User */
 
-  .nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-  }
+.user-email {
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 15px;
+
+  background: #f3f4f6;
+
+  border-radius: 30px;
+
+  font-size: 14px;
+}
+
+/* Buttons */
+
+.login-btn,
+.register-btn,
+.logout-btn {
+
+  padding: 10px 18px;
+
+  border-radius: 8px;
+
+  text-decoration: none;
+
+  color: white;
+
+  transition: .3s;
+}
+
+.login-btn {
+
+  background: #2563eb;
+}
+
+.login-btn:hover {
+
+  background: #1d4ed8;
+}
+
+.register-btn {
+
+  background: #10b981;
+}
+
+.register-btn:hover {
+
+  background: #059669;
+}
+
+.logout-btn {
+
+  border: none;
+
+  cursor: pointer;
+
+  background: #ef4444;
+}
+
+.logout-btn:hover {
+
+  background: #dc2626;
+}
+
+/* =======================
+      DARK MODE
+======================= */
+
+body.dark .navbar {
+
+  background: #111827;
+}
+
+body.dark .logo span {
+
+  color: white;
+}
+
+body.dark .nav-links a {
+
+  color: white;
+}
+
+body.dark .nav-links a:hover {
+
+  color: #60a5fa;
+}
+
+body.dark .theme-btn {
+
+  background: #1e293b;
+  color: white;
+}
+
+body.dark .user-email {
+
+  background: #1f2937;
+  color: white;
+}
+
+/* =======================
+      MOBILE
+======================= */
+
+@media(max-width:900px){
+
+.navbar{
+
+flex-direction:column;
+
+gap:20px;
+
+}
+
+.nav-links{
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+gap:18px;
+
+}
+
+.right-section{
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+}
+
 }

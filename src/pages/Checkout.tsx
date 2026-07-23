@@ -1,145 +1,141 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
+
+import { supabase } from "../lib/supabase";
 import { useCart } from "../context/CartContext";
+
 import "../styles/Checkout.css";
 
 function Checkout() {
   const navigate = useNavigate();
+
   const { cart, clearCart } = useCart();
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-    pincode: "",
-    payment: "Cash on Delivery",
-  });
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [payment, setPayment] = useState("Cash on Delivery");
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement
-    >
-  ) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const total = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
-  const handleSubmit = (
+  const handleOrder = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
 
-    // Validation
-    if (
-      !form.name ||
-      !form.email ||
-      !form.phone ||
-      !form.address ||
-      !form.city ||
-      !form.pincode
-    ) {
+    if (!name || !phone || !address) {
       toast.error("Please fill all fields");
       return;
     }
 
-    // Cart Empty Check
-    if (cart.length === 0) {
-      toast.error("Your cart is empty");
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      toast.error("Please Login First");
+      navigate("/login");
       return;
     }
 
-    // Save Order to LocalStorage
-    const oldOrders = JSON.parse(
-      localStorage.getItem("orders") || "[]"
-    );
+    for (const item of cart) {
+      const { error } = await supabase
+        .from("orders")
+        .insert({
+          user_id: user.id,
+          product_id: item.id,
+          title: item.title,
+          price: item.price,
+          quantity: item.quantity,
+          total: item.price * item.quantity,
+          thumbnail: item.thumbnail,
+          customer_name: name,
+          phone: phone,
+          address: address,
+          payment: payment,
+        });
 
-    localStorage.setItem(
-      "orders",
-      JSON.stringify([...oldOrders, cart])
-    );
+      if (error) {
+        console.log("ORDER ERROR:", error);
+        toast.error(error.message);
+        return;
+      }
+    }
 
-    // Clear Cart
+    toast.success("Order Placed Successfully 🎉");
+
     clearCart();
 
-    // Success Message
-    toast.success("🎉 Order Placed Successfully!");
-
-    // Redirect
-    setTimeout(() => {
-      navigate("/order-success");
-    }, 2000);
+    navigate("/orders");
   };
 
   return (
     <div className="checkout-container">
       <h1>Checkout</h1>
 
-      <form onSubmit={handleSubmit}>
+      <form
+        className="checkout-form"
+        onSubmit={handleOrder}
+      >
         <input
           type="text"
-          name="name"
           placeholder="Full Name"
-          value={form.name}
-          onChange={handleChange}
+          value={name}
+          onChange={(e) =>
+            setName(e.target.value)
+          }
         />
 
         <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-        />
-
-        <input
-          type="text"
-          name="phone"
+          type="tel"
           placeholder="Phone Number"
-          value={form.phone}
-          onChange={handleChange}
+          value={phone}
+          onChange={(e) =>
+            setPhone(e.target.value)
+          }
         />
 
-        <input
-          type="text"
-          name="address"
-          placeholder="Address"
-          value={form.address}
-          onChange={handleChange}
-        />
-
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
-          value={form.city}
-          onChange={handleChange}
-        />
-
-        <input
-          type="text"
-          name="pincode"
-          placeholder="Pincode"
-          value={form.pincode}
-          onChange={handleChange}
+        <textarea
+          placeholder="Delivery Address"
+          value={address}
+          onChange={(e) =>
+            setAddress(e.target.value)
+          }
         />
 
         <select
-          name="payment"
-          value={form.payment}
-          onChange={handleChange}
+          value={payment}
+          onChange={(e) =>
+            setPayment(e.target.value)
+          }
         >
           <option>Cash on Delivery</option>
-          <option>Credit Card</option>
-          <option>Debit Card</option>
           <option>UPI</option>
+          <option>Credit Card</option>
         </select>
 
-        <button type="submit">
+        <div className="order-summary">
+          <h2>Order Summary</h2>
+
+          <div className="summary-row">
+            <span>Items</span>
+            <span>{cart.length}</span>
+          </div>
+
+          <div className="summary-row">
+            <span>Total</span>
+            <span>₹ {total.toFixed(2)}</span>
+          </div>
+        </div>
+
+        <button
+          className="place-order-btn"
+          type="submit"
+        >
           Place Order
         </button>
       </form>

@@ -12,6 +12,9 @@ import Wishlist from "./pages/Wishlist";
 import OrderSuccess from "./pages/OrderSuccess";
 import MyOrders from "./pages/MyOrders";
 import Footer from "./components/Footer";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+
 function App() {
   return (
      <>
@@ -27,6 +30,8 @@ function App() {
     <Route path="/checkout" element={<Checkout />} />
     <Route path="/order-success" element={<OrderSuccess />} />
     <Route path="/contact" element={<Contact />} />
+    <Route path="/register" element={<Register />} />
+<Route path="/login" element={<Login />} />
   </Routes>
 
   <Footer />

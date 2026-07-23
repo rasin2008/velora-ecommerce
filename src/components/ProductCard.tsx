@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
@@ -11,55 +11,82 @@ type Product = {
   title: string;
   price: number;
   thumbnail: string;
+  category: string;
 };
 
-type ProductCardProps = {
+type Props = {
   product: Product;
 };
 
-function ProductCard({ product }: ProductCardProps) {
+function ProductCard({ product }: Props) {
   const { addToCart } = useCart();
   const { addToWishlist } = useWishlist();
 
-  return (
-    <div className="product-card">
-      <Link
-        to={`/product/${product.id}`}
-        style={{
-          textDecoration: "none",
-          color: "inherit",
-        }}
-      >
-        <img
-          src={product.thumbnail}
-          alt={product.title}
-          className="product-image"
-        />
+  const handleCart = () => {
+    addToCart({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      thumbnail: product.thumbnail,
+    });
 
+    toast.success("Product added to cart 🛒");
+  };
+
+  const handleWishlist = () => {
+    addToWishlist({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      thumbnail: product.thumbnail,
+    });
+
+    toast.success("Added to Wishlist ❤️");
+  };
+
+  return (
+    <div className="product-card fade-up">
+      <img
+        src={product.thumbnail}
+        alt={product.title}
+        onError={(e) => {
+          (e.currentTarget as HTMLImageElement).src =
+            "https://placehold.co/400x300?text=No+Image";
+        }}
+      />
+
+      <div className="product-info">
         <h3>{product.title}</h3>
 
-        <p className="price">₹ {product.price}</p>
-      </Link>
+        <p>{product.category}</p>
 
-      <div className="buttons">
+        <div className="price">
+          ₹ {product.price.toLocaleString()}
+        </div>
+
+        <div className="card-buttons">
+          <Link
+            to={`/product/${product.id}`}
+            style={{ flex: 1 }}
+          >
+            <button className="details-btn">
+              Details
+            </button>
+          </Link>
+
+          <button
+            className="cart-btn"
+            onClick={handleCart}
+          >
+            Cart
+          </button>
+        </div>
+
         <button
           className="wishlist-btn"
-          onClick={() => {
-            addToWishlist(product);
-            toast.success("❤️ Product added to Wishlist");
-          }}
+          onClick={handleWishlist}
         >
           ❤️ Wishlist
-        </button>
-
-        <button
-          className="cart-btn"
-          onClick={() => {
-            addToCart(product);
-            toast.success("🛒 Product added to Cart");
-          }}
-        >
-          🛒 Add to Cart
         </button>
       </div>
     </div>

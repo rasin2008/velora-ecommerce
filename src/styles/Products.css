@@ -1,13 +1,42 @@
-.sort-container {
-  text-align: center;
-  margin: 20px 0;
+.products-container {
+  width: 90%;
+  margin: 40px auto;
 }
 
-.sort-container select {
-  padding: 10px 15px;
-  width: 240px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
+.products-title {
+  text-align: center;
+  font-size: 38px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 35px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+}
+
+/* Dark Mode */
+
+body.dark .products-container {
+  background: #0f172a;
+}
+
+body.dark .products-title {
+  color: white;
+}
+
+/* Mobile */
+
+@media (max-width:768px){
+
+.products-title{
+font-size:30px;
+}
+
+.products-grid{
+gap:20px;
+}
+
 }

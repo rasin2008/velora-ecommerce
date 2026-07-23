@@ -1,42 +1,51 @@
-.success-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
+.success-container{
+    width:90%;
+    max-width:700px;
+    margin:70px auto;
+    text-align:center;
+    background:white;
+    padding:50px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
 }
 
-.success-card {
-  width: 500px;
-  background: white;
-  padding: 40px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(0,0,0,.15);
+.success-icon{
+    font-size:90px;
+    color:#10b981;
+    margin-bottom:20px;
 }
 
-.success-card h1 {
-  color: green;
+.success-container h1{
+    color:#111827;
+    margin-bottom:20px;
 }
 
-.success-card p {
-  margin: 15px 0;
-  font-size: 18px;
+.success-container p{
+    color:#6b7280;
+    margin-bottom:30px;
 }
 
-.shop-btn,
-.home-btn {
-  margin: 10px;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  color: white;
+.home-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:15px 30px;
+    border-radius:10px;
+    font-size:17px;
 }
 
-.shop-btn {
-  background: #2563eb;
+.home-btn:hover{
+    background:#1d4ed8;
 }
 
-.home-btn {
-  background: green;
+body.dark .success-container{
+    background:#1e293b;
+}
+
+body.dark .success-container h1{
+    color:white;
+}
+
+body.dark .success-container p{
+    color:#d1d5db;
 }

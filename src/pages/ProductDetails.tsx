@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
+
+import { supabase } from "../lib/supabase";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
+
 import "../styles/ProductDetails.css";
 
 type Product = {
@@ -10,84 +13,90 @@ type Product = {
   title: string;
   description: string;
   price: number;
-  rating: number;
-  discountPercentage: number;
-  stock: number;
-  brand: string;
   category: string;
-  thumbnail: string;
+  image: string;
+  stock: number;
 };
 
 function ProductDetails() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
+
   const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const { addToCart } = useCart();
   const { addToWishlist } = useWishlist();
 
   useEffect(() => {
-    fetch(`https://dummyjson.com/products/${id}`)
-      .then((res) => res.json())
-      .then((data) => setProduct(data));
+    const loadProduct = async () => {
+      if (!id) {
+        setLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("id", Number(id))
+        .single();
+
+      console.log("Product:", data);
+      console.log("Error:", error);
+
+      if (error) {
+        setProduct(null);
+      } else {
+        setProduct(data);
+      }
+
+      setLoading(false);
+    };
+
+    loadProduct();
   }, [id]);
 
-  if (!product) {
+  if (loading) {
     return <h2>Loading...</h2>;
+  }
+
+  if (!product) {
+    return <h2>❌ Product Not Found</h2>;
   }
 
   return (
     <div className="details-container">
       <div className="details-image">
-        <img
-          src={product.thumbnail}
-          alt={product.title}
-        />
+        <img src={product.image} alt={product.title} />
       </div>
 
       <div className="details-info">
         <h1>{product.title}</h1>
 
-        <p className="brand">
-          Brand : {product.brand}
+        <p>
+          <strong>Category:</strong> {product.category}
         </p>
 
-        <p className="category">
-          Category : {product.category}
-        </p>
+        <h2>₹ {product.price}</h2>
 
-        <p className="rating">
-          ⭐ {product.rating}
-        </p>
+        <p>{product.description}</p>
 
-        <h2 className="price">
-          ₹ {product.price}
-        </h2>
-
-        <p className="discount">
-          🔥 {product.discountPercentage}% OFF
-        </p>
-
-        <p
-          className={
-            product.stock > 0
-              ? "stock in-stock"
-              : "stock out-stock"
-          }
-        >
+        <p>
           {product.stock > 0
             ? "✅ In Stock"
             : "❌ Out of Stock"}
-        </p>
-
-        <p className="description">
-          {product.description}
         </p>
 
         <div className="action-buttons">
           <button
             className="cart-btn"
             onClick={() => {
-              addToCart(product);
+              addToCart({
+                id: product.id,
+                title: product.title,
+                price: product.price,
+                thumbnail: product.image,
+              });
+
               toast.success("🛒 Added to Cart");
             }}
           >
@@ -97,10 +106,14 @@ function ProductDetails() {
           <button
             className="wish-btn"
             onClick={() => {
-              addToWishlist(product);
-              toast.success(
-                "❤️ Added to Wishlist"
-              );
+              addToWishlist({
+                id: product.id,
+                title: product.title,
+                price: product.price,
+                thumbnail: product.image,
+              });
+
+              toast.success("❤️ Added to Wishlist");
             }}
           >
             Wishlist
